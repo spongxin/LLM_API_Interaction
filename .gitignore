@@ -1,0 +1,48 @@
+# Python cache and venv
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+ENV/
+
+# uv lock and requirements
+uv.lock
+requirements.txt
+
+# Jupyter and IPython
+.ipynb_checkpoints/
+
+# IDE/editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Test, coverage, and logs
+htmlcov/
+.tox/
+.nox/
+.coverage*
+.cache/
+pytest_cache/
+*.log
+
+# Docs
+/docs/_build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.bak
+*.swp
+*.tmp 

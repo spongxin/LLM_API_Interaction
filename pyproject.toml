@@ -1,0 +1,25 @@
+[project]
+name = "llm_library"
+version = "0.1.0"
+description = "A modular, composable LLM orchestration library"
+authors = [
+    { name="xintianle", email="spongxin@yeah.net" }
+]
+requires-python = ">=3.9"
+dependencies = [
+    "pydantic>=2.0.0",
+    "openai>=1.0.0",
+    "requests>=2.0.0",
+    "pytest>=7.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov"
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "."
+] 

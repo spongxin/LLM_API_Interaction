@@ -17,10 +17,11 @@ VOTE_PROMPT = PromptTemplate(
 
 # 3. Assemble components
 client = get_client(
-    endpoint="YOUR_ENDPOINT", 
-    api_key="YOUR_API_KEY", 
-    model_name="YOUR_MDOEL_NAME",
+    endpoint="",
+    api_key="",
+    model_name="",
 )
+
 output_parser = PydanticOutputParser(pydantic_model=FinalDecision)
 question = "What is the deepest depth of the world's oceans?"
 vote_results = [
@@ -35,7 +36,9 @@ final_decision, history = run_structured_output_chain(
     prompt_template=VOTE_PROMPT,
     output_parser=output_parser,
     prompt_variables={"question": question, "vote_results": vote_results},
-    max_retries=3
+    max_retries=3,
+    max_tokens=200,
+    temperature=0.0,
 )
 
 logging.info(final_decision.model_dump_json(indent=2)) 

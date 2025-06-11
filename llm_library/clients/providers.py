@@ -27,16 +27,14 @@ class AzureGPTClient(BaseClient):
             messages=messages,
             model=self.model_name,
             temperature=kwargs.get('temperature', 0.7),
-            timeout=kwargs.get('timeout', 90)
+            timeout=kwargs.get('timeout', 90),
+            max_tokens=kwargs.get('max_tokens', 1024*8)
         )
         if hasattr(response, 'usage') and response.usage:
             logging.info(f"[AzureGPTClient] Token usage: {response.usage}")
         return response.choices[0].message.content
 
-# Register DeepseekClient
-@register_client("deepseek-r1")
-@register_client("deepseek-v3")
-class DeepseekClient(BaseClient):
+class RequestClient(BaseClient):
     def __init__(self, endpoint: str, api_key: str, model_name: str, **kwargs):
         self.model_name = model_name
         self.base_url = endpoint
@@ -54,12 +52,12 @@ class DeepseekClient(BaseClient):
         response = requests.post(self.base_url, headers=self.headers, json=payload)
         response.raise_for_status()
         if hasattr(response, 'usage') and response.usage:
-            logging.info(f"[DeepseekClient] Token usage: {response.usage}")
+            logging.info(f"[RequestClient] Token usage: {response.usage}")
         return response.json()['choices'][0]['message']['content']
 
-# Register CustomizedClient as default
+# Register OpenaiClient as default
 @register_client("customized")
-class CustomizedClient(BaseClient):
+class OpenaiClient(BaseClient):
     def __init__(self, endpoint, api_key, model_name, **kwargs):
         self.model_name = model_name
         self.client = OpenAI(base_url=endpoint, api_key=api_key)
@@ -68,10 +66,11 @@ class CustomizedClient(BaseClient):
             messages=messages,
             model=self.model_name,
             temperature=kwargs.get('temperature', 0.7),
-            timeout=kwargs.get('timeout', 90)
+            timeout=kwargs.get('timeout', 90),
+            max_tokens=kwargs.get('max_tokens', 1024*8)
         )
         if hasattr(response, 'usage') and response.usage:
-            logging.info(f"[CustomizedClient] Token usage: {response.usage}")
+            logging.info(f"[OpenaiClient] Token usage: {response.usage}")
         return response.choices[0].message.content
 
 # How to register a custom client:
@@ -80,5 +79,5 @@ class CustomizedClient(BaseClient):
 #     ...
 
 def get_client(endpoint: str, api_key: str, model_name: str, **kwargs) -> BaseClient:
-    client_class = CLIENT_REGISTRY.get(model_name.lower(), CustomizedClient)
+    client_class = CLIENT_REGISTRY.get(model_name.lower(), OpenaiClient)
     return client_class(endpoint, api_key, model_name, **kwargs) 

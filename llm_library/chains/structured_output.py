@@ -24,7 +24,7 @@ def run_structured_output_chain(
     chat_history.append({"role": "user", "content": prompt})
     # 2. Prepare fix prompt template
     default_fix_tpl = PromptTemplate(
-        "Your previous output could not be parsed. Error: {error}\n{format_instructions}\nPlease correct your output and try again."
+        "Your previous output could not be parsed. Error: $error\n$format_instructions\nPlease correct your output and try again."
     )
     fix_tpl = fix_prompt_template or default_fix_tpl
     # 3. Retry loop

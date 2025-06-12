@@ -12,7 +12,7 @@ class FinalDecision(BaseModel):
 
 # 2. Define prompt template
 VOTE_PROMPT = PromptTemplate(
-    "Make a decision based on the following vote results. {format_instructions}\n\n##Question:\n{question}\n## Vote results:\n{vote_results}"
+    "Make a decision based on the following vote results. $format_instructions\n\n##Question:\n$question\n## Vote results:\n$vote_results"
 )
 
 # 3. Assemble components

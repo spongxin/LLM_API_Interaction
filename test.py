@@ -24,7 +24,7 @@ class DummyClient:
 
 class TestPromptTemplate(unittest.TestCase):
     def test_format(self):
-        tpl = PromptTemplate("Hello {name}, your score is {score}.")
+        tpl = PromptTemplate("Hello $name, your score is $score.")
         result = tpl.format(name="Alice", score=95)
         self.assertEqual(result, "Hello Alice, your score is 95.")
 
@@ -53,7 +53,7 @@ class TestPydanticOutputParser(unittest.TestCase):
 
 class TestStructuredOutputChain(unittest.TestCase):
     def test_chain_with_retry(self):
-        prompt = PromptTemplate("Give me a JSON. {format_instructions}")
+        prompt = PromptTemplate("Give me a JSON. $format_instructions")
         parser = PydanticOutputParser(TestModel)
         # First response is invalid, second is valid
         client = DummyClient(responses=["not a json", '{"foo": "ok", "bar": 2}'])
@@ -68,7 +68,7 @@ class TestStructuredOutputChain(unittest.TestCase):
         self.assertEqual(result.bar, 2)
         self.assertEqual(len(history), 4)
     def test_chain_fail(self):
-        prompt = PromptTemplate("Give me a JSON. {format_instructions}")
+        prompt = PromptTemplate("Give me a JSON. $format_instructions")
         parser = PydanticOutputParser(TestModel)
         client = DummyClient(responses=["bad", "still bad"])
         with self.assertRaises(RuntimeError):

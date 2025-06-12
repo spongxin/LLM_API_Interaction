@@ -6,7 +6,7 @@ from llm_library.prompts.template import PromptTemplate
 
 class PydanticOutputParser:
     DEFAULT_FORMAT_TEMPLATE = PromptTemplate(
-        "Your output must be a JSON object that matches the following Pydantic schema:\n```json\n{schema}\n```"
+        "Your output must be a JSON object that matches the following Pydantic schema:\n```json\n$schema\n```"
     )
 
     def __init__(self, pydantic_model: Type[BaseModel], format_template: Optional[PromptTemplate] = None):

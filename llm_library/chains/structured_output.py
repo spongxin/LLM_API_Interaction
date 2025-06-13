@@ -34,6 +34,7 @@ def run_structured_output_chain(
         try:
             return output_parser.parse(response_text), chat_history
         except Exception as e:
+            print(f'output_parser error: \n{type(e)}:{e}\n\n{response_text}')
             fix_prompt = fix_tpl.format(error=str(e), format_instructions=format_instructions)
             chat_history.append({"role": "user", "content": fix_prompt})
     raise RuntimeError(f"Failed to get valid structured output after {max_retries} retries.") 

@@ -8,11 +8,14 @@ CLIENT_REGISTRY = {}
 
 def register_client(name):
     def decorator(cls):
-        CLIENT_REGISTRY[name.lower()] = cls
+        if isinstance(name, list):
+            for n in name:
+                CLIENT_REGISTRY[n.lower()] = cls
+        else:
+            CLIENT_REGISTRY[name.lower()] = cls
         return cls
     return decorator
 
-# Register AzureGPTClient
 @register_client("gpt-4o")
 class AzureGPTClient(BaseClient):
     def __init__(self, endpoint, api_key, model_name="gpt-4o", **kwargs):
@@ -34,6 +37,7 @@ class AzureGPTClient(BaseClient):
             logging.info(f"[AzureGPTClient] Token usage: {response.usage}")
         return response.choices[0].message.content
 
+@register_client(['deepseek-v3', 'deepseek-r1'])
 class RequestClient(BaseClient):
     def __init__(self, endpoint: str, api_key: str, model_name: str, **kwargs):
         self.model_name = model_name
@@ -55,8 +59,6 @@ class RequestClient(BaseClient):
             logging.info(f"[RequestClient] Token usage: {response.usage}")
         return response.json()['choices'][0]['message']['content']
 
-# Register OpenaiClient as default
-@register_client("customized")
 class OpenaiClient(BaseClient):
     def __init__(self, endpoint, api_key, model_name, **kwargs):
         self.model_name = model_name

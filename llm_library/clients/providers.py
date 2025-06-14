@@ -55,8 +55,7 @@ class RequestClient(BaseClient):
         }
         response = requests.post(self.base_url, headers=self.headers, json=payload)
         response.raise_for_status()
-        if hasattr(response, 'usage') and response.usage:
-            logging.info(f"[RequestClient] Token usage: {response.usage}")
+        logging.info(f"[RequestClient] Token usage: {response.json()['usage']}")
         return response.json()['choices'][0]['message']['content']
 
 class OpenaiClient(BaseClient):

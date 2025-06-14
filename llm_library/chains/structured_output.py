@@ -3,6 +3,7 @@ from ..parsers.pydantic_parser import PydanticOutputParser
 from ..prompts.template import PromptTemplate
 from pydantic import BaseModel
 from typing import Any, List, Dict, Optional
+import logging
 
 def run_structured_output_chain(
     client: BaseClient,
@@ -36,4 +37,5 @@ def run_structured_output_chain(
         except Exception as e:
             fix_prompt = fix_tpl.format(error=str(e), format_instructions=format_instructions)
             chat_history.append({"role": "user", "content": fix_prompt})
+            logging.info(f"Parsing error caused by output not following JSON schema.")
     raise RuntimeError(f"Failed to get valid structured output after {max_retries} retries.") 

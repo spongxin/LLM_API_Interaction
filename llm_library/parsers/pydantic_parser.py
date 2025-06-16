@@ -20,7 +20,6 @@ class PydanticOutputParser:
 
     def parse(self, text: str) -> BaseModel:
         """Extract, validate, and parse JSON from LLM output."""
-        text = text.replace("\n", "\\n").replace("\t", "\\t")
         match = re.search(r"```json\n({.*?})\n```", text, re.DOTALL)
         if match:
             json_str = match.group(1)

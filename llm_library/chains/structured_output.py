@@ -37,5 +37,5 @@ def run_structured_output_chain(
         except Exception as e:
             fix_prompt = fix_tpl.format(error=str(e), format_instructions=format_instructions)
             chat_history.append({"role": "user", "content": fix_prompt})
-            logging.info(f"Parsing error caused by output not following JSON schema.")
+            logging.info(f"Parsing error caused by output not following JSON schema. Origin output: {response_text.strip()}")
     raise RuntimeError(f"Failed to get valid structured output after {max_retries} retries.") 

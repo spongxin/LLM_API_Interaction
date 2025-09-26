@@ -50,6 +50,23 @@ class TestPydanticOutputParser(unittest.TestCase):
         # bar should be int, not str
         with self.assertRaises(ValueError):
             parser.parse('{"foo": "abc", "bar": "not_an_int"}')
+    def test_parse_with__N_json(self):
+        class P450Model(BaseModel):
+            p450_name: str
+            reference: list[str]
+        parser = PydanticOutputParser(P450Model)
+        text = """```json
+{
+    "p450_name": "CYP81A6",
+    "reference": [
+        "Figure 3. CYP81A6 provides herbicide tolerance in rice. (a) Rice and Sagittaria trifolia before bentazon application. (b) Rice and S. trifolia following bentazon application. Bentazon selectively co
+ntrolled S. trifolia, whereas rice tolerated the herbicide due to CYP81A6-mediated metabolism. Knock-down of CYP81A6 results in severe bentazon-injury in rice.33 CYP81A6 also is involved in tolerance to sulfon
+ylurea herbicides in rice.33,34"
+    ]
+```"""
+        obj = parser.parse(text)
+        self.assertEqual(obj.p450_name, "CYP81A6")
+        self.assertIsNotNone(obj.reference)
 
 class TestStructuredOutputChain(unittest.TestCase):
     def test_chain_with_retry(self):

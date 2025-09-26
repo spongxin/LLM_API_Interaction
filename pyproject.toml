@@ -10,7 +10,8 @@ dependencies = [
     "pydantic>=2.0.0",
     "openai>=1.0.0",
     "requests>=2.0.0",
-    "pytest>=7.0.0"
+    "pytest>=7.0.0",
+    "json-repair>=0.44.1",
 ]
 
 [project.optional-dependencies]
